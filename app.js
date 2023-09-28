@@ -17,12 +17,12 @@ app.use("/api", indexRoutes);
 
 
 const usersRouter = require("./routes/users.routes");
-app.use("/api", isAuthenticated, usersRouter); 
+app.use("/api", isAuthenticated, usersRouter);
 
 
 
-const authRouter = require("./routes/auth.routes");     
-app.use("/auth", authRouter); 
+const authRouter = require("./routes/auth.routes");
+app.use("/auth", authRouter);
 
 require("./error-handling")(app);
 

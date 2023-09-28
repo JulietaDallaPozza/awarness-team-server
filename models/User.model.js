@@ -20,7 +20,7 @@ const userSchema = new Schema(
     userType: {
       type: String,
       required: [true, 'User type is required.'],
-      enum: ['Awareness', 'Event'] 
+      enum: ['Awareness', 'Event']
     }
   },
   {
