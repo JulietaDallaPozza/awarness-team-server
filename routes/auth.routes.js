@@ -13,7 +13,7 @@ const saltRounds = 10;
 
 router.post('/signup', (req, res, next) => {
   const { email, password, name, userType } = req.body;
-
+  console.log(email)
   if (email === '' || password === '' || name === '') {
     res.status(400).json({ message: "Provide email, password and name" });
     return;
@@ -33,14 +33,12 @@ router.post('/signup', (req, res, next) => {
 
   User.findOne({ email })
     .then((foundUser) => {
-      // If the user with the same email already exists, send an error response
       if (foundUser) {
         res.status(400).json({ message: "User already exists." });
         return;
       }
 
 
-      // If the email is unique, proceed to hash the password
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashedPassword = bcrypt.hashSync(password, salt);
 
@@ -61,7 +59,7 @@ router.post('/signup', (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ message: "Internal Server Error" })
+      res.status(500).json({ errorMessage: "Internal Server Error" })
     });
 });
 
@@ -87,7 +85,6 @@ router.post('/login', (req, res, next) => {
         return;
       }
 
-      // Compare the provided password with the one saved in the database
       const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
 
       if (passwordCorrect) {
@@ -112,13 +109,13 @@ router.post('/login', (req, res, next) => {
       }
 
     })
+
     .catch(err => res.status(500).json({ message: "Internal Server Error" }));
 });
 
 
 
 
-// GET  /auth/verify  -  Used to verify JWT stored on the client
 router.get('/verify', isAuthenticated, (req, res, next) => {
 
   // If JWT token is valid the payload gets decoded by the
